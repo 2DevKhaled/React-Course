@@ -143,22 +143,29 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 18. Destructuring Objects and Arrays :
-// Destructuring Objects :
+// 19.Rest/Spread Operator :
+//////////////////////////////////////////////
+// Rest Operator : 
 const book = getBook(2);
-// That Case when i give the variable name same name the properity in object
+const [firseGenere,secondGenere,...otheresGenere] = book.genres;
+firseGenere 
+secondGenere
+otheresGenere
+////// Impotant Note : \\\\\\\
+// we can only place this here in the end of the destructuring operation.
+//////////////////////////////////////////////
+// Spread Operator : 
+// Use Case : when we want to push array to array as a new array we can use spread operator 
+const {genres} = book;
+const newGenere = [...genres, "epic fansatcy"] ;
+newGenere
+//////////////////////////////////////////////
+// Spread operator with objects : 
+const updateBooks = {...book, moviePublicationDate : '2024-4-13'};
+updateBooks
+// - is to simply spread out all the properties of this book object into the new object,
+//////////////////////////////////////////////
+// Update object properties : 
+updateproperties = {...book,pages: 519} ;
+updateproperties;
 
-// const {title,author} = book;
-
-/////////////////////////////////////////////
-// else case :
-
-//const {titles='Green Book',author} = book;
-
-//////////////////////////////////////////
-// Destructuring Arrays :
-//////////////////////////////////////////
-const [firstGenre,seconsGenres,,fourdGenres] = book.genres;
-firstGenre
-seconsGenres
-fourdGenres
