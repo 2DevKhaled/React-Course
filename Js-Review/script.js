@@ -143,10 +143,13 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 20.Template Literals:
-const book = getBook(1);
-const {title,author,pages,publicationDate}= book;
-const summary = `${title} , a ${pages}-page long book, was written by ${author}, and published in ${publicationDate}`
-summary
+// 21.Ternaries Instead of if/else Statements
+// Syntax : condaion ? true case : false case;
+const book = getBook(1)
+const {title,author,pages} = book
+let pageRange = pages > 1000 ? 'over a thousand' :  'less then 1000'; 
+pageRange
+
+
 
 
