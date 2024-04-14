@@ -143,12 +143,13 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 21.Ternaries Instead of if/else Statements
-// Syntax : condaion ? true case : false case;
-const book = getBook(1)
-const {title,author,pages} = book
-let pageRange = pages > 1000 ? 'over a thousand' :  'less then 1000'; 
-pageRange
+// 22. Arrow Functions
+// Syntax : (argument) => return value
+const book = getBook(2);
+const getYear = (str) => {
+    return str.split("-")[0];
+}
+console.log(getYear(book.publicationDate));
 
 
 
