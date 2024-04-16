@@ -143,39 +143,13 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 23.Short-Circuiting And Logical Operators: &&, ||, ??
-const book = getBook(2);
-const { title, author, publicationDate, genres, pages, hasMovieAdaptation } =
-  book;
-  ////////////////////////////////////////////////
-// Working with && :
-console.log(true && "Some String");
-console.log(false && "Some String");
-console.log(hasMovieAdaptation && "Some Sting");
-// falsy value :0,'', null , undefined
-console.log(0 && "Some String");
-console.log(null && "Some String");
-console.log(undefined && "Some String");
-console.log("" && "Some String");
-////////////////////////////////////////////////
-// Working with || :
-console.log(true || 'Some String');
-console.log(false || 'Some String');
-// falsy value :0,'', null , undefined
-console.log(0 || 'Some String');
-console.log('' || 'Some String');
-console.log(null || 'Some String');
-console.log(undefined || 'Some String');
-const spanishTranslation = book.translations.spanish;
-spanishTranslation
-console.log(spanishTranslation && "NO TRANSLATED")
-console.log(spanishTranslation || "NO TRANSLATED")
-////////////////////////////////////////////////
-// Working with ?? :
-// Use  ?? when you dealing with false value null '' ....
-// The Wrong Way 
-const countWrong = book.reviews.librarything.reviewsCount || 'no data' ;
-countWrong
-// The right Way 
-const count = book.reviews.librarything.reviewsCount ?? 'no data' ;
-count
+// 24.Optional Chaining
+const book = getBook(3)
+// book number 3 has not review libaryyhing so it's undefiend , modern javascript have sloution for this is called ''' Optional Chaining ''' 
+// Syntax : ''' ? ''' when you write this javascript will check if that varibale before ? it's not undefined will ؤontinue  
+function getTotalReviewCount(book){
+    const goodreads = book.reviews.goodreads.reviewsCount
+    const librarything = book.reviews.librarything?.reviewsCount ?? 0
+    return goodreads + librarything;
+}
+console.log(getTotalReviewCount(book))
