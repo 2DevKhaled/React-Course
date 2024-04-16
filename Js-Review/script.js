@@ -1,4 +1,4 @@
-// Note Use Quokka.js Extensions 
+// Note Use Quokka.js Extensions
 const data = [
   {
     id: 1,
@@ -143,14 +143,39 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 22. Arrow Functions
-// Syntax : (argument) => return value
+// 23.Short-Circuiting And Logical Operators: &&, ||, ??
 const book = getBook(2);
-const getYear = (str) => {
-    return str.split("-")[0];
-}
-console.log(getYear(book.publicationDate));
-
-
-
-
+const { title, author, publicationDate, genres, pages, hasMovieAdaptation } =
+  book;
+  ////////////////////////////////////////////////
+// Working with && :
+console.log(true && "Some String");
+console.log(false && "Some String");
+console.log(hasMovieAdaptation && "Some Sting");
+// falsy value :0,'', null , undefined
+console.log(0 && "Some String");
+console.log(null && "Some String");
+console.log(undefined && "Some String");
+console.log("" && "Some String");
+////////////////////////////////////////////////
+// Working with || :
+console.log(true || 'Some String');
+console.log(false || 'Some String');
+// falsy value :0,'', null , undefined
+console.log(0 || 'Some String');
+console.log('' || 'Some String');
+console.log(null || 'Some String');
+console.log(undefined || 'Some String');
+const spanishTranslation = book.translations.spanish;
+spanishTranslation
+console.log(spanishTranslation && "NO TRANSLATED")
+console.log(spanishTranslation || "NO TRANSLATED")
+////////////////////////////////////////////////
+// Working with ?? :
+// Use  ?? when you dealing with false value null '' ....
+// The Wrong Way 
+const countWrong = book.reviews.librarything.reviewsCount || 'no data' ;
+countWrong
+// The right Way 
+const count = book.reviews.librarything.reviewsCount ?? 'no data' ;
+count
