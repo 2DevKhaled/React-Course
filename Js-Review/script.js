@@ -143,13 +143,18 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 24.Optional Chaining
-const book = getBook(3)
-// book number 3 has not review libaryyhing so it's undefiend , modern javascript have sloution for this is called ''' Optional Chaining ''' 
-// Syntax : ''' ? ''' when you write this javascript will check if that varibale before ? it's not undefined will ؤontinue  
-function getTotalReviewCount(book){
-    const goodreads = book.reviews.goodreads.reviewsCount
-    const librarything = book.reviews.librarything?.reviewsCount ?? 0
-    return goodreads + librarything;
+// 25.The Array map Method
+function getTotalReviewCount(book) {
+  const goodreads = book.reviews?.goodreads?.reviewsCount ?? 0;
+  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
+  return goodreads + librarything;
 }
-console.log(getTotalReviewCount(book))
+const books = getBooks();
+const titles = books.map((ele) => ele.title);
+// console.log(titles);
+const essentiaData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  reviewsCount: getTotalReviewCount(book),
+}));
+console.log(essentiaData);
