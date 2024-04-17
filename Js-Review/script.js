@@ -45,7 +45,7 @@ const data = [
       "short stories",
       "fantasy",
     ],
-    hasMovieAdaptation: false,
+    hasMovieAdaptation: true,
     pages: 295,
     translations: {},
     reviews: {
@@ -67,7 +67,7 @@ const data = [
     publicationDate: "1965-01-01",
     author: "Frank Herbert",
     genres: ["science fiction", "novel", "adventure"],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 658,
     translations: {
       spanish: "",
@@ -86,7 +86,7 @@ const data = [
     publicationDate: "1997-06-26",
     author: "J. K. Rowling",
     genres: ["fantasy", "adventure"],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 223,
     translations: {
       spanish: "Harry Potter y la piedra filosofal",
@@ -143,18 +143,21 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 25.The Array map Method
-function getTotalReviewCount(book) {
-  const goodreads = book.reviews?.goodreads?.reviewsCount ?? 0;
-  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
-  return goodreads + librarything;
-}
+// 26.The Array Filter Method
+// The filter() method creates a new array filled with elements that pass a test provided by a function.
+// The filter() method does not execute the function for empty elements.
+// The filter() method does not change the original array.
 const books = getBooks();
-const titles = books.map((ele) => ele.title);
-// console.log(titles);
-const essentiaData = books.map((book) => ({
-  title: book.title,
-  author: book.author,
-  reviewsCount: getTotalReviewCount(book),
-}));
-console.log(essentiaData);
+const longBooks = books.filter(function (book){
+  return book.pages > 500;
+}).filter(function (book){
+  return book.hasMovieAdaptation;
+})
+// console.log(longBooks);
+/////////////////// 
+const adventureBooks = books.filter(function (book){
+  return book.genres.includes("adventure")
+}).map(function (book){
+  return book.title;
+})
+adventureBooks
