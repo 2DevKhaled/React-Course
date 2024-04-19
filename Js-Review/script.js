@@ -143,21 +143,9 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 26.The Array Filter Method
-// The filter() method creates a new array filled with elements that pass a test provided by a function.
-// The filter() method does not execute the function for empty elements.
-// The filter() method does not change the original array.
+// 27.The Array reduce Method
 const books = getBooks();
-const longBooks = books.filter(function (book){
-  return book.pages > 500;
-}).filter(function (book){
-  return book.hasMovieAdaptation;
-})
-// console.log(longBooks);
-/////////////////// 
-const adventureBooks = books.filter(function (book){
-  return book.genres.includes("adventure")
-}).map(function (book){
-  return book.title;
-})
-adventureBooks
+const pagesAllBooks = books.reduce(function (acc,book){
+  return acc + book.pages;
+},0)
+pagesAllBooks 
