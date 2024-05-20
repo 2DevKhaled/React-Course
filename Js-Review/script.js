@@ -143,9 +143,14 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 27.The Array reduce Method
+// 28.The Array sort Method
 const books = getBooks();
-const pagesAllBooks = books.reduce(function (acc,book){
-  return acc + book.pages;
-},0)
-pagesAllBooks 
+const arr = [3,7,1,9,6]; 
+const sorted= arr.slice().sort(function sortingArr(a,b){
+  return a -b ; 
+})
+sorted
+arr
+/////////////////////////////
+const sortedByPages = books.slice().sort((a,b) => a.pages - b.pages)
+sortedByPages
