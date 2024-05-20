@@ -143,14 +143,28 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
-// 28.The Array sort Method
-const books = getBooks();
-const arr = [3,7,1,9,6]; 
-const sorted= arr.slice().sort(function sortingArr(a,b){
-  return a -b ; 
+// 29.Working with immuuyable arrays
+const book = getBooks()
+
+const newbook = {
+  id : 6, 
+  title: 'My Journey With Coding',
+  author: "Khaled Nasser", 
+  pages: 235
+}
+// Add book object to array 
+const booksAfterAdd = [...book, newbook]
+// booksAfterAdd
+// Delete book object from array
+//NOTE : we want to have short array based of condaiton so we will use --Fillter Method--
+const booksAfterDelete = booksAfterAdd.filter(function(book){
+  return book.id !== 2
 })
-sorted
-arr
-/////////////////////////////
-const sortedByPages = books.slice().sort((a,b) => a.pages - b.pages)
-sortedByPages
+// booksAfterDelete 
+// Update book object in array 
+// we want update book objects in array base of condation so we will use --Map Method--
+const booksAfterUpdate = booksAfterDelete.map(function(book){
+  return book.id === 6 ? {...book,pages:222} : book ;
+})
+booksAfterUpdate
+
