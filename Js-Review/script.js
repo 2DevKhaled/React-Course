@@ -1,6 +1,9 @@
 // Note Use Quokka.js Extensions
-// 30.Asynchronous Javascriprt:Promises
-fetch("https://jsonplaceholder.typicode.com/todos")
-  .then((res)=>res.json())
-  .then((data)=>console.log(data))
-  
+// 31.Asynchronous Javascriprt:Async/Await
+// https://jsonplaceholder.typicode.com/todos
+async function getData(){
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos")
+  const data = res.json();
+  return data;
+}
+const data =await getData();
