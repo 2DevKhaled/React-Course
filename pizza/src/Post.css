@@ -1,0 +1,8 @@
+.card{
+    padding: 5px 16px;
+    border: teal 2px solid;
+    margin-top: 10px;
+}
+h3,h5{
+    text-align: center;
+}
