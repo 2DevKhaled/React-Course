@@ -3,52 +3,42 @@ import { useState } from "react";
 const messages = ["Learn React ", "Apply for jobs", "Invest your new income"];
 
 function App() {
-  const [isOpen,setIsOpen] = useState(true);
   const [step, setStep] = useState(1);
-  function handlePrevious() {
-    if (step > 1) setStep(step - 1);
-  }
-  function handleNext() {
-    if (step < 3) {
-      setStep(step + 1);
-    }else if(step==3){
-      setIsOpen(false);
-    }
-  }
-  function handelOpen(){
-    setIsOpen(!isOpen)
-  }
+  const [count, setCount] = useState(0);
+  const date = new Date("june 21 2024");
+  date.setDate(date.getDate() +count)
   return (
-    <>
-      <button className="close" onClick={handelOpen}><i class="ri-close-line"></i></button>
-      {
-      isOpen !== true?<div></div>:
-    <div className="steps">
-      <div className="numbers">
-        <div className={step >= 1 ? "active" : ""}>1</div>
-        <div className={step >= 2 ? "active" : ""}>2</div>
-        <div className={step >= 3 ? "active" : ""}>3</div>
+    <div className="dateCounter">
+      <div className="steps">
+        <div ckassName="buttons">
+          <button onClick={() => setStep((s) => s - 1)}>
+            <span>-</span>
+          </button>
+          <p>Step:{step}</p>
+          <button onClick={() => setStep((s) => s + 1)}>
+            <span>+</span>
+          </button>
+        </div>
       </div>
-      <p className="message">
-        Step {step}: {messages[step - 1]}
-        
-      </p>
-      <div className="buttons">
-        <button
-          onClick={handlePrevious}
-          style={{ backgroundColor: "#7950f2", color: "#fff" }}
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          style={{ backgroundColor: "#7950f2", color: "#fff" }}
-        >
-          Next
-        </button>
+      <hr />
+      <div className="counter">
+        <div ckassName="buttons">
+          <button onClick={() => setCount((c) => c - step)}>
+            <span>-</span>
+          </button>
+          <p>Count:{count}</p>
+          <button onClick={() => setCount((c) => c + step)}>
+            <span>+</span>
+          </button>
+        </div>
       </div>
-    </div>}
-    </>
+      <div className="date">
+        <p>
+          {count === 0 ? "Today is " : count>0 ?` ${count} days from today is: `: `${Math.abs(count)} days ago was`}
+          {date.toDateString()}
+        </p>
+      </div>
+    </div>
   );
 }
 export default App;
