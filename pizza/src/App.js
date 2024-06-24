@@ -1,75 +1,62 @@
 import { useState } from "react";
-const intialItems = [
-  { id: 1, description: "Passports", quanttiy: 2, packed: false },
-  { id: 2, description: "Socks", quanttiy: 12, packed: true },
-];
 export default function App() {
   return (
-    <div className="app">
-      <Logo />
-      <Form />
-      <PackingList />
-      <Stats />
+    <div className="App">
+      <FlashCards />
     </div>
   );
 }
-function Logo() {
-  return <h1>🌱 Far Away 👜</h1>;
-}
-function Form() {
-  const [description, setDescription] = useState("");
-  const [quanttiy, setQuanttiy] = useState(1);
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!description) return;
-    const newItem = { description, quanttiy, package: false, id: Date.now() };
-    setDescription("");
-    setQuanttiy(1);
-  }
+
+const questions = [
+  {
+    id: 3457,
+    question: "What language is React based on?",
+    answer: "JavaScript",
+  },
+  {
+    id: 7336,
+    question: "What are the building blocks of React apps?",
+    answer: "Components",
+  },
+  {
+    id: 8832,
+    question: "What's the name of the syntax we use to describe a UI in React?",
+    answer: "JSX",
+  },
+  {
+    id: 1297,
+    question: "How to pass data from parent to child components?",
+    answer: "Props",
+  },
+  {
+    id: 9103,
+    question: "How to give components memory?",
+    answer: "useState hook",
+  },
+  {
+    id: 2002,
+    question:
+      "What do we call an input element that is completely synchronised with state?",
+    answer: "Controlled element",
+  },
+];
+
+function FlashCards() {
+  const [selectedId, setSelectedId] = useState(null);
+  const handelClick = (id) => {
+    setSelectedId(id);
+  };
   return (
-    <form className="add-form" onSubmit={handleSubmit}>
-      <h3>What do you need for your trip</h3>
-      <select
-        value={quanttiy}
-        onChange={(e) => setQuanttiy(Number(e.target.value))}
-      >
-        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
-          <option value={num} key={num}>
-            {num}
-          </option>
-        ))}
-      </select>
-      <input
-        type="text"
-        placeholder="item..."
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      ></input>
-      <button>Add</button>
-    </form>
-  );
-}
-function PackingList() {
-  return (
-    <div className="list">
-      <ul>
-        {intialItems.map((item) => (
-          <Item item={item} key={item.id} />
-        ))}
-      </ul>
+    <div className="flashcards">
+      {questions.map((questions) => (
+        <div
+          onClick={() => handelClick(questions.id)}
+          className={questions.id == selectedId ? "selected" : ""}
+          key={questions.id}
+        >
+          {questions.id === selectedId ? questions.answer : questions.question}
+        </div>
+      ))}
     </div>
   );
-}
-function Item({ item }) {
-  return (
-    <li>
-      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-        {item.quanttiy} {item.description}
-      </span>
-      <button>❌</button>
-    </li>
-  );
-}
-function Stats() {
-  <footer>You Have X items on your list,and you already packed X (x%)</footer>;
 }
