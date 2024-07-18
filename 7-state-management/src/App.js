@@ -1,58 +1,72 @@
-import { useState } from "react";
+import { Children, useState } from "react";
 import "./index.css";
-
-const faqs = [
-  {
-    title: "Where are these chairs assembled?",
-    text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium, quaerat temporibus quas dolore provident nisi ut aliquid ratione beatae sequi aspernatur veniam repellendus.",
-  },
-  {
-    title: "How long do I have to return my chair?",
-    text: "Pariatur recusandae dignissimos fuga voluptas unde optio nesciunt commodi beatae, explicabo natus.",
-  },
-  {
-    title: "Do you ship to countries outside the EU?",
-    text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
-  },
-];
 export default function App() {
-  return (
-    <div>
-      <Accordion data={faqs} />
-    </div>
-  );
-}
-
-function Accordion({ data }) {
-  const [curOpen, setCurOpen] = useState(null);
-  return (
-    <div className="accordion">
-      {data.map((el, i) => (
-        <AccordionItem
-          curOpen={curOpen}
-          onOpen={setCurOpen}
-          title={el.title}
-          num={i + 1}
-        >
-          {el.text}
-        </AccordionItem>
-        
-      ))}
-    </div>
-  );
-}
-function AccordionItem({ children,num, title,onOpen, curOpen }) {
-  const isOpen = num === curOpen;
-  function handelOpen() {
-    onOpen(isOpen ? null : num);
+  const [bill, setBill] = useState(null);
+  const [percentage1, setPercentage1] = useState(null);
+  const [percentage2, setPercentage2] = useState(null);
+  const tip = bill * ((percentage1 + percentage2) / 2 / 100);
+  function handelRest() {
+    setBill("");
+    setPercentage1(null);
+    setPercentage2(null);
   }
   return (
-    <div className="item" onClick={handelOpen}>
-      <p className="number">{num < 9 ? `0${num}` : `${num}`}</p>
-      <p className="title">{title}</p>
-      <p className="icon">-</p>
-
-      {isOpen ? <div className="content-box">{children}</div> : ""}
+    <div className="app">
+      <BillInput onSetBill={setBill} bill={bill} />
+      <SelectPercentage percentage={percentage1} onSelect={setPercentage1}>
+        How Did You Like The Service
+      </SelectPercentage>
+      <SelectPercentage percentage={percentage2} onSelect={setPercentage2}>
+        How Did Your Friends Like The Service
+      </SelectPercentage>
+      <Output bill={bill} tip={tip} />
+      <ButtonRest onClick={handelRest}/>
     </div>
   );
+}
+
+function BillInput({ onSetBill, bill }) {
+  return (
+    <div>
+      <label for="bill">How Much was the bill</label>
+      <input
+        id="bill"
+        type="number"
+        value={bill}
+        onChange={(e) => {
+          onSetBill(Number(e.target.value));
+        }}
+      ></input>
+    </div>
+  );
+}
+function SelectPercentage({ children, percentage, onSelect }) {
+  return (
+    <div>
+      <label for="select">{children}</label>
+      <select
+        value={percentage}
+        onChange={(e) => {
+          onSelect(Number(e.target.value));
+        }}
+      >
+        <option value="0">Dissatisfied (0%)</option>
+        <option value="5">It was okay (5%)</option>
+        <option value="10">It was good (10%)</option>
+        <option value="20">Absolutely amazing! (20%)</option>
+      </select>
+    </div>
+  );
+}
+function Output({ bill, tip }) {
+  return (
+    <div>
+      <h5>
+        `Your Pay ${bill + tip} ( ${bill} + ${tip} )`
+      </h5>
+    </div>
+  );
+}
+function ButtonRest({onClick}) {
+  return <button onClick={onClick}>Rest</button>;
 }
