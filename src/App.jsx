@@ -53,19 +53,22 @@ const KEY = "f84fc31d";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState(tempMovieData);
-  useEffect(function (){
+  useEffect(function () {
     async function fetchMovies() {
-      let res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=deadpool`);
-      let data = await res.json(); 
+      setIsLoading(true);
+      let res = await fetch(
+        `http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=deadpool`
+      );
+      let data = await res.json();
       setMovies(data.Search);
+      setIsLoading(false);
     }
-    fetchMovies()
-  }
-     ,[]);
+    fetchMovies();
+  }, []);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen1, setIsOpen1] = useState(true);
   const [isOpen2, setIsOpen2] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
@@ -90,7 +93,7 @@ export default function App() {
       </nav>
 
       <main className="main">
-        <div className="box">
+        {isLoading ? <Loader/> :<div className="box">
           <button
             className="btn-toggle"
             onClick={() => setIsOpen1((open) => !open)}
@@ -113,7 +116,7 @@ export default function App() {
               ))}
             </ul>
           )}
-        </div>
+        </div>}
 
         <div className="box">
           <button
@@ -175,3 +178,12 @@ export default function App() {
     </>
   );
 }
+
+function Loader() {
+  return (
+    <div>
+      <p className="loader">Loading...</p>
+    </div>
+  )
+}
+
