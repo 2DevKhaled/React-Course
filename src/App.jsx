@@ -16,6 +16,12 @@ export default function App() {
   function handleCloseMovie() {
     setSelectedId(null);
   }
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched , movie]);
+  }
+  function hanelDeleteWatched(id){
+    setWatched((movies) => movies.filter((movie) => movie.imdbID !== id))
+  }
   useEffect(
     function () {
       async function fetchMovies() {
@@ -67,11 +73,13 @@ export default function App() {
             <MovieDetails
               selectedId={selectedId}
               onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
+              watched={watched}
             />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedMoviesList watched={watched} />
+              <WatchedMoviesList watched={watched} onDeleteWatched={hanelDeleteWatched} />
             </>
           )}
         </Box>
@@ -150,9 +158,12 @@ function Movie({ movie, onSelectMovie }) {
     </li>
   );
 }
-function MovieDetails({ selectedId, onCloseMovie }) {
+function MovieDetails({ selectedId, onCloseMovie  , onAddWatched , watched}) {
   const [movie, setMovie] = useState({});
   const [isloading, setIsLoading] = useState(false);
+  const [userRating , setUserRating] = useState('');
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedUserRating = watched.find((movie)=> movie.imdbID === selectedId)?.userRating;
   const {
     Title: title,
     Year: year,
@@ -165,6 +176,19 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     Director: director,
     Genre: genre,
   } = movie;
+  function handelAdd() {
+    const newWatchedMovie = {
+      imdbID : selectedId,
+      title,
+      poster,
+      year ,
+      imdbRating :Number(imdbRating) , 
+      runtime : Number(runtime.split(' ').at(0)) , 
+      userRating,
+    }
+    onAddWatched(newWatchedMovie)
+    onCloseMovie();
+  }
   useEffect(
     function () {
       async function getMovieDetails() {
@@ -180,6 +204,16 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     },
     [selectedId]
   );
+  useEffect( function (){
+    if(!title) return;
+    document.title = `Movie | ${title}`;
+
+    return function (){
+      document.title = "usePopcorn"
+    }
+  },[title]
+)
+  
   return (
     <div className="details">
       {isloading ? (
@@ -205,7 +239,13 @@ function MovieDetails({ selectedId, onCloseMovie }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} />
+              {!isWatched ? 
+              <>
+                <StarRating maxRating={10} size={24} onSetRating={setUserRating}/>
+                {userRating ? <button onClick={handelAdd} className="btn-add">+ Add to list</button> : ""}
+              </>
+              : <span>You Rated With Movie {watchedUserRating} ⭐️</span>
+              } 
             </div>
             <p>
               <em>{plot}</em>
@@ -246,20 +286,20 @@ function WatchedSummary({ watched }) {
     </div>
   );
 }
-function WatchedMoviesList({ watched }) {
+function WatchedMoviesList({ watched , onDeleteWatched}) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.key} />
+        <WatchedMovie movie={movie} key={movie.key} onDeleteWatched={onDeleteWatched} />
       ))}
     </ul>
   );
 }
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie , onDeleteWatched }) {
   return (
     <li key={movie.imdbID}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+      <img src={movie.poster} alt={`${movie.title} poster`} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -273,6 +313,7 @@ function WatchedMovie({ movie }) {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        <button className="btn-delete" onClick={() => onDeleteWatched(movie.imdbID)}>X</button>
       </div>
     </li>
   );
