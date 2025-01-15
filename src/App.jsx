@@ -7,10 +7,13 @@ const KEY = "f84fc31d";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched") ;
+    return storedValue ? JSON.parse(storedValue) : [];
+  });
   function handleSelectMovie(id) {
     setSelectedId(id);
   }
@@ -23,6 +26,13 @@ export default function App() {
   function hanelDeleteWatched(id) {
     setWatched((movies) => movies.filter((movie) => movie.imdbID !== id));
   }
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
+
   useEffect(
     function () {
       const controller = new AbortController();
@@ -203,7 +213,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       function callBack(e) {
         if (e.code == "Escape") {
           onCloseMovie();
-          
         }
       }
 
